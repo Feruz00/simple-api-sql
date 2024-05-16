@@ -18,7 +18,9 @@ module.exports = sequelize.define('users', {
   username:{
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
+    unique: {
+      msg: "Email already taken"
+    },
     validate: {
       notEmpty: true
     }
@@ -44,22 +46,14 @@ module.exports = sequelize.define('users', {
   },
   email:{
     type: DataTypes.STRING,
-    // allowNull: false,
-    defaultValue: '',
-    unique: {
-      msg: 'That email is not available.'
-    },
-    // validate:{
-    //   notNull: {
-    //     msg: 'Email required'
-    //   },
-    //   notEmpty:{
-    //     msg:'email cannot be empty'
-    //   },
-    //   isEmail:{
-    //     msg: 'Invalid email'
-    //   }
-    // }
+    allowNull: false,
+    unique: true,
+    validate: {
+      isEmail: {
+        args: true,
+        msg: 'Please enter a valid email.'
+      }
+    }
   },
   password: {
     type: DataTypes.STRING,
@@ -118,12 +112,6 @@ module.exports = sequelize.define('users', {
   },
   
 },{
-  indexes:[
-    {
-      unique: true,
-      fields:['username', 'email'],
-    }
-  ],
   timestamps: true, 
   paranoid: true,
   freezeTableName: true,

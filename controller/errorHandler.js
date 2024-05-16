@@ -33,13 +33,14 @@ const sendProdError = (err, res)=>{
 
 }
 const errorHandling = (err,req,res,next)=>{
-    console.log(Object.keys(err))
     if(err.name === "SequelizeValidationError"){
        
         err = new AppError(err.errors[0].message, 400)
     }
     if (err.name === 'SequelizeUniqueConstraintError') {
-        console.dir(err.original)
+        // console.dir(err.original)
+        console.log(err)
+        res.json(err)
         err = new AppError(err.errors[0].message, 400);
     }
     
